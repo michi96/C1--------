@@ -389,7 +389,7 @@ bool Motion_Detection( ) {
 	R_recode.push_back(R);
 	L_recode.push_back(L);
 
-	// 点は20個まで記録する
+	// 点は10個まで記録する
 	if (R_recode.size( ) == 10 + 1) {
 		vector<point> buff;
 		for (vector<point>::iterator it = R_recode.begin() + 1; it != R_recode.end(); it++) {
@@ -421,7 +421,7 @@ bool Motion_Detection( ) {
 	}
 
 	// 手のひらコントロールのセンターポイントを決める
-	if (hand_control && c_x == -1 && c_y == -1 ) {
+	if (hand_control) {
 		/*
 		if (shake_hand_R && shake_hand_L) { }
 		else if (shake_hand_R) {c_x = R.new_x; c_y = R.new_y; controler_R = true;}
@@ -432,7 +432,7 @@ bool Motion_Detection( ) {
 
 	// 手のひらコントロールで入力
 	if (controler_R) {
-		in_right = false; in_left = false; in_up = false; in_down = false;
+		in_right = false; in_left = false; in_up = false; in_down = false; controler_R = false;
 		if (c_x - R.new_x > c_range) in_left = true;
 		if (R.new_x - c_x > c_range) in_right = true;
 		if (c_y - R.new_y > c_range) in_up = true;
@@ -446,7 +446,7 @@ bool Motion_Detection( ) {
 		if (L.new_y - c_y > c_range) in_down = true;
 	}
 
-	if (controler_R || controler_L) {
+	if (hand_control) {
 		for (int y = 0; y < HEIGHT; y++) {
 			for (int x = 0; x < WIDTH; x++) {
 				if (distans_pp(c_x, c_y, x, y) < distans(c_range)) {
